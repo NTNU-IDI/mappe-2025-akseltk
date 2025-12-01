@@ -1,8 +1,8 @@
 package edu.ntnu.idi.idatt.model;
 
 import edu.ntnu.idi.idatt.util.Validators;
-
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DiaryEntry {
     private String author;
@@ -24,6 +24,7 @@ public class DiaryEntry {
     public String getAuthor() {
         return author;
     }
+
     public String getTitle() {
         return title;
     }
@@ -34,6 +35,19 @@ public class DiaryEntry {
 
     public LocalDateTime getCreationTime() {
         return creationTime;
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        String formattedTime = creationTime.format(formatter);
+
+        return String.format("[%s] %s (%s): %s",
+                formattedTime,
+                title,
+                author,
+                description);
     }
 }
 
