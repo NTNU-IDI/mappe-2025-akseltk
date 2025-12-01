@@ -9,4 +9,10 @@ public class Validators {
             throw new IllegalArgumentException(fieldName + " cannot be null or empty.");
         }
     }
+
+    public static void validateNotNull(Object object, String fieldName) {
+        if (object == null) {
+            throw new IllegalArgumentException(fieldName + " cannot be null.");
+        }
+    }
 }
