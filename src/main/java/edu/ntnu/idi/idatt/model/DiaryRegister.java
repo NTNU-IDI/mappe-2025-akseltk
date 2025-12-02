@@ -31,7 +31,7 @@ public class DiaryRegister {
     public List<DiaryEntry> getAllEntries() {
         return entries.stream()
                 .sorted(Comparator.comparing(DiaryEntry::getCreationTime).reversed())
-                .collect(Collectors.toList());
+                .toList();
     }
 
 
@@ -40,7 +40,7 @@ public class DiaryRegister {
 
         return entries.stream()
                 .filter(entry -> entry.getCreationTime().toLocalDate().equals(date))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public boolean isEmpty() {
