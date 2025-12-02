@@ -18,7 +18,6 @@ public class DiaryEntry {
         Validators.validateString(author, "Author");
 
         this.entryId = UUID.randomUUID().toString();
-
         this.title = title;
         this.description = description;
         this.author = author;
@@ -49,8 +48,8 @@ public class DiaryEntry {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DiaryEntry that = (DiaryEntry) o;
-        return entryId.equals(that.entryId);
+        DiaryEntry entry = (DiaryEntry) o;
+        return entryId.equals(entry.entryId);
     }
 
     @Override
