@@ -3,8 +3,10 @@ package edu.ntnu.idi.idatt.model;
 import edu.ntnu.idi.idatt.util.Validators;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 public class DiaryEntry {
+    private final String entryId;
     private String author;
     private String title;
     private String description;
@@ -15,10 +17,16 @@ public class DiaryEntry {
         Validators.validateString(description, "Description");
         Validators.validateString(author, "Author");
 
+        this.entryId = UUID.randomUUID().toString();
+
         this.title = title;
         this.description = description;
         this.author = author;
         this.creationTime = LocalDateTime.now();
+    }
+
+    public String getEntryId() {
+        return entryId;
     }
 
     public String getAuthor() {
@@ -38,13 +46,24 @@ public class DiaryEntry {
     }
 
     @Override
-    public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DiaryEntry that = (DiaryEntry) o;
+        return entryId.equals(that.entryId);
+    }
 
-        String formattedTime = creationTime.format(formatter);
+    @Override
+    public int hashCode() {
+        return entryId.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         return String.format("[%s] %s (%s): %s",
-                formattedTime,
+                creationTime.format(FORMATTER),
                 title,
                 author,
                 description);
