@@ -3,11 +3,10 @@ package edu.ntnu.idi.idatt.model;
 import edu.ntnu.idi.idatt.util.Validators;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.UUID;
 
 public class DiaryEntry {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    private final String entryId;
+    private int entryId;
     private Author author;
     private String title;
     private String description;
@@ -18,16 +17,26 @@ public class DiaryEntry {
         Validators.validateString(description, "Description");
         Validators.validateNotNull(author, "Author");
 
-
-        this.entryId = UUID.randomUUID().toString();
+        entryId = 0;
         this.title = title;
         this.description = description;
         this.author = author;
         this.creationTime = LocalDateTime.now();
     }
 
-    public String getEntryId() {
+    public int getEntryId() {
         return entryId;
+    }
+
+    public void setEntryId(int id){
+        if(this.entryId != 0){
+            throw new IllegalStateException("The entry already has an ID");
+        }
+        if(id <= 0){
+            throw new IllegalArgumentException("ID needs to be positive");
+        }
+
+        this.entryId = id;
     }
 
     public Author getAuthor() {
@@ -47,22 +56,9 @@ public class DiaryEntry {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DiaryEntry entry = (DiaryEntry) o;
-        return entryId.equals(entry.entryId);
-    }
-
-    @Override
-    public int hashCode() {
-        return entryId.hashCode();
-    }
-
-    @Override
     public String toString() {
-
-        return String.format("[%s] %s (%s): %s",
+        return String.format("ID: %d - [%s] %s (%s): %s",
+                entryId,
                 creationTime.format(FORMATTER),
                 title,
                 author.getFullName(),
