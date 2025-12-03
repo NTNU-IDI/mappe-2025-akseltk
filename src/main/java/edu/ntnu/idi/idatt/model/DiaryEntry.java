@@ -6,16 +6,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class DiaryEntry {
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private final String entryId;
-    private String author;
+    private Author author;
     private String title;
     private String description;
     private final LocalDateTime creationTime;
 
-    public DiaryEntry(String title, String description, String author) {
+    public DiaryEntry(String title, String description, Author author) {
         Validators.validateString(title, "Title");
         Validators.validateString(description, "Description");
-        Validators.validateString(author, "Author");
+        Validators.validateNotNull(author, "Author");
+
 
         this.entryId = UUID.randomUUID().toString();
         this.title = title;
@@ -28,7 +30,7 @@ public class DiaryEntry {
         return entryId;
     }
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
@@ -59,12 +61,11 @@ public class DiaryEntry {
 
     @Override
     public String toString() {
-        private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         return String.format("[%s] %s (%s): %s",
                 creationTime.format(FORMATTER),
                 title,
-                author,
+                author.getFullName(),
                 description);
     }
 }
