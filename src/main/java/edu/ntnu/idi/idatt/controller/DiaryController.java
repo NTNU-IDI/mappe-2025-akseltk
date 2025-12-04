@@ -6,6 +6,8 @@ import edu.ntnu.idi.idatt.model.DiaryEntry;
 import edu.ntnu.idi.idatt.model.DiaryRegister;
 import edu.ntnu.idi.idatt.view.UserInterface;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 public class DiaryController {
@@ -34,6 +36,7 @@ public class DiaryController {
       switch (choise) {
         case "1" -> createNewEntry();
         case "2" -> showAllEntries();
+        case "3" -> searchMenu();
         case "0" -> {
           ui.printMessage("Shuting down... Goodbye!");
           running = false;
@@ -137,6 +140,79 @@ public class DiaryController {
     for (DiaryEntry entry : entries) {
       ui.printMessage(entry.toString());
       ui.printMessage("------------------------------");
+    }
+  }
+
+  private void searchMenu() {
+    boolean searching = true;
+    while (searching) {
+      ui.printMessage("--- SEARCH MENU ---");
+      ui.printMessage("1. Search by keyword");
+      ui.printMessage("2. Search by date");
+      ui.printMessage("3. Search by date range");
+      ui.printMessage("4. Search by author");
+      ui.printMessage("0. Back to main menu");
+      String choice = ui.readInput("Choose a number");
+
+      switch (choice) {
+        case "1" -> searchByKeyword();
+        case "2" -> searchByDate();
+        case "3" -> searchBetweenDate();
+        case "4" -> searchByAuthor();
+        case "0" -> searching = false;
+        default -> ui.printError(INVALID_CHOICE_MESSAGE);
+      }
+    }
+  }
+
+  private void searchByKeyword() {
+    String keyword = ui.readInput("Enter keyword");
+    List<DiaryEntry> searchResults = diaryRegister.searchKeyWord(keyword);
+    printSearchResults(searchResults);
+  }
+
+  private void searchByDate() {
+    String dateString = ui.readInput("Enter date (yyyy-mm-dd)");
+
+    try {
+      LocalDate date = LocalDate.parse(dateString);
+      List<DiaryEntry> searchResults = diaryRegister.getEntriesByDate(date);
+      printSearchResults(searchResults);
+    } catch (DateTimeParseException | IllegalArgumentException e) {
+      ui.printError(e.getMessage());
+    }
+
+  }
+
+  private void searchBetweenDate() {
+    String fromString = ui.readInput("Enter From (yyyy-mm-dd)");
+    String toString =  ui.readInput("Enter To (yyyy-mm-dd)");
+
+    try {
+      LocalDate from = LocalDate.parse(fromString);
+      LocalDate to = LocalDate.parse(toString);
+      List<DiaryEntry> searchResults = diaryRegister.searchEntriesBetweenDates(from, to);
+      printSearchResults(searchResults);
+    } catch (DateTimeParseException | IllegalArgumentException e) {
+      ui.printError(e.getMessage());
+    } 
+  }
+
+  private void searchByAuthor() {
+    String email = ui.readInput("Enter author email");
+    List<DiaryEntry> searchResults = diaryRegister.getEntriesByAuthor(email);
+    printSearchResults(searchResults);
+  }
+
+  private void printSearchResults(List<DiaryEntry> searchResults) {
+    if (searchResults.isEmpty()) {
+      ui.printMessage("No entries found!");
+    } else  {
+      ui.printMessage("--- Search RESULTS ---");
+      for (DiaryEntry entry : searchResults) {
+        ui.printMessage(entry.toString());
+        ui.printMessage("------------------------------");
+      }
     }
   }
 
