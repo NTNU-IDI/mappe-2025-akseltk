@@ -11,7 +11,7 @@ public class Author {
   public Author(String firstName, String lastName, String email) {
     Validators.validateString(firstName, "First Name");
     Validators.validateString(lastName, "Last Name");
-    Validators.validateEmail("email");
+    Validators.validateEmail(email);
 
     this.firstName = firstName;
     this.lastName = lastName;
