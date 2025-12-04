@@ -32,6 +32,14 @@ public class DiaryRegister {
             .toList();
   }
 
+  public List<DiaryEntry> getAllEntriesByAuthor(String email) {
+    Validators.validateString(email, "Email");
+
+    return entries.stream()
+            .filter(entry -> entry.getAuthor().getEmail().equalsIgnoreCase(email))
+            .toList();
+  }
+
 
   public List<DiaryEntry> getEntryByDate(LocalDate date) {
     Validators.validateNotNull(date, "Date");
