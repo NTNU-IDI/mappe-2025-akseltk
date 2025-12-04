@@ -33,7 +33,8 @@ public class DiaryController {
 
       switch (choise) {
         case "1" -> createNewEntry();
-        case "4" -> {
+        case "2" -> showAllEntries();
+        case "0" -> {
           ui.printMessage("Shuting down... Goodbye!");
           running = false;
         }
@@ -58,7 +59,7 @@ public class DiaryController {
       DiaryEntry diaryEntry = new DiaryEntry(title, description, author);
       diaryRegister.addEntry(diaryEntry);
       ui.printSuccess("Entry created! Got ID: " +  diaryEntry.getEntryId());
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalArgumentException | IllegalStateException e) {
       ui.printError(e.getMessage());
     }
   }
@@ -122,6 +123,20 @@ public class DiaryController {
     } catch (IllegalArgumentException e) {
       ui.printError(e.getMessage());
       return createNewAuthor();
+    }
+  }
+
+  private void showAllEntries()  {
+    if (diaryRegister.getAllEntries().isEmpty()) {
+      ui.printMessage("No entries found!");
+      return;
+    }
+
+    ui.printMessage("--- ALL ENTRIES ---");
+    List<DiaryEntry> entries = diaryRegister.getAllEntries();
+    for (DiaryEntry entry : entries) {
+      ui.printMessage(entry.toString());
+      ui.printMessage("------------------------------");
     }
   }
 
