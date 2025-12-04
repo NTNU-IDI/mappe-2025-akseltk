@@ -1,28 +1,44 @@
 package edu.ntnu.idi.idatt.view;
 
-import edu.ntnu.idi.idatt.model.DiaryEntry;
+import java.util.Scanner;
+
 
 public class UserInterface {
+  private final Scanner scanner;
 
-    public void init() {
-        System.out.println("--- Diary Application Initialized ---");
-    }
+  public UserInterface() {
+    this.scanner = new Scanner(System.in);
+  }
 
-    public void start() {
-        System.out.println("--- Diary Application Started ---");
+  public void init() {
+    System.out.println("--- Diary Application Initialized ---");
+  }
 
-        try {
-            DiaryEntry entry1 = new DiaryEntry("t1", "litt om meg", "Aksel");
-            DiaryEntry entry2 = new DiaryEntry("t2", "litt om deg", "Aksel");
-            DiaryEntry entry3 = new DiaryEntry("t3", "jeg fanget en fisk", "Aksel");
+  public void printMenu() {
+    System.out.println("\n--- Main Menu ---");
+    System.out.println("1. Write new entry");
+    System.out.println("2. Show all entries");
+    System.out.println("3. Search for entries");
+    System.out.println("4. Exit");
+    System.out.print("Choose a number: ");
+  }
 
-            System.out.println(entry1);
-            System.out.println(entry2);
-            System.out.println(entry3);
+  public String readInput(String prompt) {
+    System.out.print(prompt + ": ");
+    return scanner.nextLine();
+  }
 
-        } catch (IllegalArgumentException e) {
-            System.out.println("Feil: " + e.getMessage());
-        }
-    }
+  public void printMessage(String message) {
+    System.out.println(message);
+  }
+
+  public void printError(String message) {
+    System.out.println("ERROR: " + message);
+  }
+
+  public void printSuccess(String message) {
+    System.out.println("SUCCESS: " + message);
+  }
 }
+
 
