@@ -40,10 +40,19 @@ public class DiaryRegister {
     public List<DiaryEntry> getEntryByDate(LocalDate date) {
         Validators.validateNotNull(date, "Date");
 
-        return entries.stream()
-                .filter(entry -> entry.getCreationTime().toLocalDate().equals(date))
-                .toList();
-    }
+    return entries.stream()
+            .filter(entry -> entry.getCreationTime().toLocalDate().equals(date))
+            .toList();
+  }
+
+  public List<DiaryEntry> searchKeyWord(String keyword) {
+    return entries.stream()
+            .filter(entry ->
+                    entry.getDescription().toLowerCase().contains(keyword.toLowerCase()) ||
+                            entry.getTitle().toLowerCase().contains(keyword.toLowerCase()))
+            .toList();
+
+  }
 
     public boolean isEmpty() {
         return entries.isEmpty();
