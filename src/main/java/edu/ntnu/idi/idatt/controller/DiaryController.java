@@ -23,6 +23,9 @@ public class DiaryController {
 
   public void start() {
     ui.init();
+    
+    addTestData();
+
     boolean running = true;
     while (running) {
       ui.printMenu();
@@ -122,11 +125,28 @@ public class DiaryController {
     }
   }
 
+  private void addTestData() {
+    try {
+      Author a1 = new Author("Peter", "Petterson", "peter@ex.com");
+      Author a2 = new Author("Alebert", "Albertson", "albert@ex.com");
+      Author a3 = new Author("David", "Davidson", "david@ex.com");
 
+      authorRegister.addAuthor(a1);
+      authorRegister.addAuthor(a2);
+      authorRegister.addAuthor(a3);
 
+      DiaryEntry e1 = new DiaryEntry("Movie day", "Watched Inception! It was strange, but amazing at the same time.", a1);
+      DiaryEntry e2 = new DiaryEntry("Training", "Hit chest with two of my friends, i always have a great time with them", a2);
+      DiaryEntry e3 = new DiaryEntry("Dinning night", "Ait at this great restaurant with my family, i ate stake with mashed potatoes.", a3);
 
+      diaryRegister.addEntry(e1);
+      diaryRegister.addEntry(e2);
+      diaryRegister.addEntry(e3);
 
+      ui.printSuccess("Test data loaded!");
 
-
-
+    } catch (IllegalArgumentException e) {
+      ui.printError("Failed to add test data: " + e.getMessage());
+    }
+  }
 }
