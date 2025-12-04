@@ -202,8 +202,11 @@ public class DiaryController {
   }
 
   private void searchByAuthor() {
-    String email = ui.readInput("Enter author email");
-    List<DiaryEntry> searchResults = diaryRegister.getEntriesByAuthor(email);
+    if (authorRegister.getAllAuthors().isEmpty()) {
+      ui.printMessage("No authors found!");
+      return;
+    }
+    List<DiaryEntry> searchResults = diaryRegister.getEntriesByAuthor(selectExistingAuthor().getEmail());
     printSearchResults(searchResults);
   }
 
