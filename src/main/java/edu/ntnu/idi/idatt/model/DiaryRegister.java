@@ -41,7 +41,7 @@ public class DiaryRegister {
   }
 
 
-  public List<DiaryEntry> getEntryByDate(LocalDate date) {
+  public List<DiaryEntry> getEntriesByDate(LocalDate date) {
     Validators.validateNotNull(date, "Date");
 
     return entries.stream()
