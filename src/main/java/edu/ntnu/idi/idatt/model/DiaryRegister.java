@@ -14,14 +14,16 @@ import java.util.Comparator;
 public class DiaryRegister {
     private final List<DiaryEntry> entries;
 
-    public DiaryRegister() {
-        this.entries = new ArrayList<>();
-    }
+  public DiaryRegister() {
+    this.entries = new ArrayList<>();
+    nextId = 1;
+  }
 
-    public void addEntry(DiaryEntry entry) {
-        Validators.validateNotNull(entry, "Diary entry");
-        entries.add(entry);
-    }
+  public void addEntry(DiaryEntry entry) {
+    Validators.validateNotNull(entry, "Diary entry");
+    entry.setEntryId(nextId++);
+    entries.add(entry);
+  }
 
     public void removeEntry(DiaryEntry entry) {
         Validators.validateNotNull(entry, "Diary entry");
