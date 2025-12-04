@@ -106,7 +106,6 @@ public class DiaryController {
           return authors.get(authorNumber);
         } else {
           ui.printError(INVALID_CHOICE_MESSAGE);
-          return selectExistingAuthor();
         }
       } catch (NumberFormatException e) {
         ui.printError("Invalid input, please use a number.");
@@ -127,7 +126,6 @@ public class DiaryController {
         return newAuthor;
       } catch (IllegalArgumentException e) {
         ui.printError(e.getMessage());
-        return createNewAuthor();
       }
     }
   }
