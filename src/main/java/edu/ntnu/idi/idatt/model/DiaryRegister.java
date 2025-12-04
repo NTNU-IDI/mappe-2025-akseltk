@@ -41,6 +41,29 @@ public class DiaryRegister {
             .toList();
   }
 
+  public List<DiaryEntry> getEntriesByAuthor(String email) {
+     return entries.stream()
+            .filter(entry -> entry.getAuthor().getEmail().equals(email))
+            .toList();
+  }
+
+  public List<DiaryEntry> searchEntriesBetweenDates(LocalDate from, LocalDate to) {
+    Validators.validateNotNull(from, "From");
+    Validators.validateNotNull(to, "To");
+
+    if (from.isAfter(to)) {
+      throw new IllegalArgumentException("From must be before to");
+    }
+
+    return entries.stream()
+            .filter(entry -> {
+              LocalDate date = entry.getCreationTime().toLocalDate();
+              return date.isAfter(from) && date.isBefore(to);
+            })
+            .sorted(Comparator.comparing(DiaryEntry::getCreationTime))
+            .toList();
+  }
+
   public List<DiaryEntry> searchKeyWord(String keyword) {
     return entries.stream()
             .filter(entry ->
