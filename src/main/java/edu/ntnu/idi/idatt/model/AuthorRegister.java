@@ -2,37 +2,34 @@ package edu.ntnu.idi.idatt.model;
 
 import edu.ntnu.idi.idatt.util.Validators;
 
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Comparator;
 import java.util.List;
 
+
 public class AuthorRegister {
-  private final List<Author> authors;
+  private final Map<String, Author> authors;
 
   public AuthorRegister() {
-    this.authors = new ArrayList<>();
+    this.authors = new HashMap<>();
   }
 
   public void addAuthor(Author author) {
     Validators.validateNotNull(author, "Author");
 
-    boolean emailExists = authors.stream()
-            .anyMatch(a -> a.getEmail().equalsIgnoreCase(author.getEmail()));
-
-    if (emailExists) {
-      throw new IllegalArgumentException("Author with email " + author.getEmail() + " already exists.");
+    if (authors.putIfAbsent(author.getEmail(), author) != null) {
+      throw new IllegalArgumentException("An author already exists with email " + author.getEmail());
     }
-
-    authors.add(author);
   }
 
   public void removeAuthor(Author author) {
     Validators.validateNotNull(author, "Author");
-    authors.remove(author);
+    authors.remove(author.getEmail());
   }
 
   public List<Author> getAllAuthors() {
-    return authors.stream()
+    return authors.values().stream()
             .sorted(Comparator.comparing(Author::getFullName))
             .toList();
   }
