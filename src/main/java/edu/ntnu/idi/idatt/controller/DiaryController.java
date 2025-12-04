@@ -73,59 +73,62 @@ public class DiaryController {
       return createNewAuthor();
     }
 
-    ui.printMessage("--- AUTHOR MENU ---");
-    ui.printMessage("1. select existing author");
-    ui.printMessage("2. Create new author");
+    while (true) {
+      ui.printMessage("--- AUTHOR MENU ---");
+      ui.printMessage("1. select existing author");
+      ui.printMessage("2. Create new author");
 
-    String choice = ui.readInput("select an option");
+      String choice = ui.readInput("select an option");
 
-    return switch (choice) {
-      case "1" -> selectExistingAuthor();
-      case "2" -> createNewAuthor();
-      default -> {
-        ui.printError(INVALID_CHOICE_MESSAGE);
-        yield getAuthorForEntry();
-      }
-    };
+      return switch (choice) {
+        case "1" -> selectExistingAuthor();
+        case "2" -> createNewAuthor();
+        default -> null;
+      };
+    }
   }
 
   private Author selectExistingAuthor() {
     List<Author> authors = authorRegister.getAllAuthors();
-    ui.printMessage("--- EXISTING AUTHOR MENU ---");
 
-    for (int i=0; i<authors.size(); i++) {
-      ui.printMessage((i+1) + ". " + authors.get(i));
-    }
+    while (true) {
+      ui.printMessage("--- EXISTING AUTHOR MENU ---");
 
-    String input = ui.readInput("select an author number");
-
-    try {
-      int authorNumber = Integer.parseInt(input) -1;
-      if (authorNumber >= 0 && authorNumber < authors.size()) {
-        return authors.get(authorNumber);
-      } else  {
-        ui.printError(INVALID_CHOICE_MESSAGE);
-        return selectExistingAuthor();
+      for (int i = 0; i < authors.size(); i++) {
+        ui.printMessage((i + 1) + ". " + authors.get(i));
       }
-    } catch (NumberFormatException e) {
-      ui.printError("Invalid input, please use a number.");
-      return selectExistingAuthor();
+
+      String input = ui.readInput("select an author number");
+
+      try {
+        int authorNumber = Integer.parseInt(input) - 1;
+        if (authorNumber >= 0 && authorNumber < authors.size()) {
+          return authors.get(authorNumber);
+        } else {
+          ui.printError(INVALID_CHOICE_MESSAGE);
+          return selectExistingAuthor();
+        }
+      } catch (NumberFormatException e) {
+        ui.printError("Invalid input, please use a number.");
+      }
     }
   }
 
   private Author createNewAuthor() {
-    ui.printMessage("--- CREATE NEW AUTHOR ---");
-    String firstName = ui.readInput("First Name");
-    String lastName = ui.readInput("Last Name");
-    String email = ui.readInput("Email");
+    while (true) {
+      ui.printMessage("--- CREATE NEW AUTHOR ---");
+      String firstName = ui.readInput("First Name");
+      String lastName = ui.readInput("Last Name");
+      String email = ui.readInput("Email");
 
-    try {
-      Author newAuthor = new Author(firstName, lastName, email);
-      authorRegister.addAuthor(newAuthor);
-      return newAuthor;
-    } catch (IllegalArgumentException e) {
-      ui.printError(e.getMessage());
-      return createNewAuthor();
+      try {
+        Author newAuthor = new Author(firstName, lastName, email);
+        authorRegister.addAuthor(newAuthor);
+        return newAuthor;
+      } catch (IllegalArgumentException e) {
+        ui.printError(e.getMessage());
+        return createNewAuthor();
+      }
     }
   }
 
