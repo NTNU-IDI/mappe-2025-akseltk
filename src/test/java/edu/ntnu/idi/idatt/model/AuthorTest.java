@@ -17,7 +17,7 @@ class AuthorTest {
 
 
   @Test
-  void testValidAuthorCreation() {
+  void testValidAuthorConstructor() {
     assertEquals("Navn", AuthorTest.this.testAuthor.getFirstName());
     assertEquals("Navneson", AuthorTest.this.testAuthor.getLastName());
     assertEquals("Navn Navneson", AuthorTest.this.testAuthor.getFullName());
