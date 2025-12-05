@@ -1,31 +1,82 @@
 package edu.ntnu.idi.idatt.model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class DiaryEntryTest {
+  private Author testAuthor;
+  private DiaryEntry testEntry;
+
+  @BeforeEach
+  void setUp() {
+    testAuthor = new Author("Navn", "Navneson", "navn@ex.com");
+    testEntry = new DiaryEntry("Title", "Description", testAuthor);
+  }
 
   @Test
-  void testValidEntryCreation() {
-    Author author = new Author("Ola", "Normann");
-    DiaryEntry entry = new DiaryEntry("Min tittel", "Min tekst", author);
+  void testValidEntryConstructor() {
+    assertEquals("Title", testEntry.getTitle());
+    assertEquals("Description", testEntry.getDescription());
+    assertEquals(testAuthor, testEntry.getAuthor());
+    assertEquals(0, testEntry.getEntryId());
 
-    assertEquals("Min tittel", entry.getTitle());
-    assertEquals("Min tekst", entry.getDescription());
-    assertEquals("Ola Nordmann", entry.getAuthor().getFullName());
+    assertNotNull(testEntry.getCreationTime());
+  }
 
-    assertNotNull(entry.getCreationTime(), "Tidspunktet skal settes automatisk");
+  @Test
+  void testSetEntryId() {
+    testEntry.setEntryId(1);
+    assertEquals(1, testEntry.getEntryId());
+  }
+
+  @Test
+  void testInvalidSetEntryId() {
+    assertThrows(IllegalArgumentException.class,
+            () -> {
+      testEntry.setEntryId(-1);
+            });
+
+    assertThrows(IllegalArgumentException.class,
+            () -> {
+          testEntry.setEntryId(0);
+            });
+  }
+
+  @Test
+  void testNoDuplicateEntryIds() {
+    testEntry.setEntryId(1);
+
+    assertThrows(IllegalStateException.class,
+            () -> {
+          testEntry.setEntryId(1);
+            });
   }
 
   @Test
   void testInvalidTitleThrowsException() {
-    Author validAuthor = new Author("Gylid", "Forfatter");
-
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-      new DiaryEntry("", "Gyldig tekst", validAuthor);
+    assertThrows(IllegalArgumentException.class,
+            () -> {
+      new DiaryEntry("", "Description", testAuthor);
     });
-    assertEquals("Title cannot be null or empty.", exception.getMessage());
+
+    assertThrows(IllegalArgumentException.class,
+            () -> {
+              new DiaryEntry("", "Description", testAuthor);
+            });
+  }
+
+  @Test
+  void testInvalidDescriptionThrowsException() {
+    assertThrows(IllegalArgumentException.class,
+            () -> {
+          new DiaryEntry("Title", "", testAuthor);
+            });
+
+    assertThrows(IllegalArgumentException.class,
+            () -> {
+              new DiaryEntry("Title", null, testAuthor);
+            });
   }
 
   @Test
