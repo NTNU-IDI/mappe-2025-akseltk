@@ -1,38 +1,39 @@
 package edu.ntnu.idi.idatt.model;
 
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class AuthorTest {
-  String firstName = "Per";
-  String lastName = "Petterson";
-  String fullName = "Per Petterson";
-  String email = "per@ex.com";
+  private Author testAuthor;
+
+  @BeforeEach
+  void setUp() {
+    testAuthor = new Author("Navn", "Navneson", "navn@ex.com");
+  }
 
 
 
   @Test
   void testValidAuthorCreation() {
-    Author author = new Author(firstName, lastName, email);
-
-    assertEquals(firstName, author.getFirstName());
-    assertEquals(lastName, author.getLastName());
-    assertEquals(fullName, author.getFullName());
-    assertEquals("per@ex.com", author.getEmail());
+    assertEquals("Navn", AuthorTest.this.testAuthor.getFirstName());
+    assertEquals("Navneson", AuthorTest.this.testAuthor.getLastName());
+    assertEquals("Navn Navneson", AuthorTest.this.testAuthor.getFullName());
+    assertEquals("navn@ex.com", AuthorTest.this.testAuthor.getEmail());
   }
 
   @Test
   void testInvalidFirstName() {
     assertThrows(IllegalArgumentException.class,
             () -> {
-              new Author("", lastName, email);
+              new Author("", "Navneson", "navn@ex.com");
             });
 
     assertThrows(IllegalArgumentException.class,
             () -> {
-              new Author(null, lastName, email);
+              new Author(null, "Navneson", "navn@ex.com");
             });
   }
 
@@ -40,12 +41,12 @@ class AuthorTest {
   void testInvalidLastName() {
     assertThrows(IllegalArgumentException.class,
             () -> {
-              new Author(firstName, "", email);
+              new Author("Navn", "", "navn@ex.com");
             });
 
     assertThrows(IllegalArgumentException.class,
             () -> {
-              new Author(firstName, null, email);
+              new Author("Navn", null, "navn@ex.com");
             });
   }
 
@@ -53,19 +54,17 @@ class AuthorTest {
   void testInvalidEmail() {
     assertThrows(IllegalArgumentException.class,
             () -> {
-              new Author(firstName, lastName, "");
+              new Author("Navn", "Navneson", "");
             });
 
     assertThrows(IllegalArgumentException.class,
             () -> {
-              new Author(firstName, lastName, null);
+              new Author("Navn", "Navneson", null);
             });
   }
 
   @Test
   void testValidToString() {
-    Author author = new Author(firstName, lastName, email);
-
-    assertEquals(firstName + " (" + email + ")", author.toString());
+    assertEquals("Navn (navn@ex.com)", testAuthor.toString());
   }
 }
