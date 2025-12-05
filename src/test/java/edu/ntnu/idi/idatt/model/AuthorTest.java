@@ -17,7 +17,7 @@ class AuthorTest {
 
 
   @Test
-  void testValidAuthorConstructor() {
+  void testAuthorConstructorWithValidValues() {
     assertEquals("Navn", AuthorTest.this.testAuthor.getFirstName());
     assertEquals("Navneson", AuthorTest.this.testAuthor.getLastName());
     assertEquals("Navn Navneson", AuthorTest.this.testAuthor.getFullName());
@@ -25,7 +25,7 @@ class AuthorTest {
   }
 
   @Test
-  void testInvalidFirstName() {
+  void testInvalidFirstNameThrows() {
     assertThrows(IllegalArgumentException.class,
             () -> {
               new Author("", "Navneson", "navn@ex.com");
@@ -38,7 +38,7 @@ class AuthorTest {
   }
 
   @Test
-  void testInvalidLastName() {
+  void testInvalidLastNameThrows() {
     assertThrows(IllegalArgumentException.class,
             () -> {
               new Author("Navn", "", "navn@ex.com");
@@ -51,7 +51,7 @@ class AuthorTest {
   }
 
   @Test
-  void testInvalidEmail() {
+  void testInvalidEmailThrows() {
     assertThrows(IllegalArgumentException.class,
             () -> {
               new Author("Navn", "Navneson", "");

@@ -2,6 +2,9 @@ package edu.ntnu.idi.idatt.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class DiaryEntryTest {
@@ -15,7 +18,7 @@ class DiaryEntryTest {
   }
 
   @Test
-  void testValidEntryConstructor() {
+  void testEntryConstructorWithValidValues() {
     assertEquals("Title", testEntry.getTitle());
     assertEquals("Description", testEntry.getDescription());
     assertEquals(testAuthor, testEntry.getAuthor());
@@ -25,13 +28,13 @@ class DiaryEntryTest {
   }
 
   @Test
-  void testSetEntryId() {
+  void testSetEntryIdWithValidValue() {
     testEntry.setEntryId(1);
     assertEquals(1, testEntry.getEntryId());
   }
 
   @Test
-  void testInvalidSetEntryId() {
+  void testSetEntryIdThrowsOnNonPositive() {
     assertThrows(IllegalArgumentException.class,
             () -> {
       testEntry.setEntryId(-1);
@@ -44,7 +47,7 @@ class DiaryEntryTest {
   }
 
   @Test
-  void testNoDuplicateEntryIds() {
+  void testEntryIdIsImmutable() {
     testEntry.setEntryId(1);
 
     assertThrows(IllegalStateException.class,
@@ -54,7 +57,7 @@ class DiaryEntryTest {
   }
 
   @Test
-  void testInvalidTitleThrowsException() {
+  void testInvalidTitleThrows() {
     assertThrows(IllegalArgumentException.class,
             () -> {
       new DiaryEntry("", "Description", testAuthor);
@@ -62,12 +65,12 @@ class DiaryEntryTest {
 
     assertThrows(IllegalArgumentException.class,
             () -> {
-              new DiaryEntry("", "Description", testAuthor);
+              new DiaryEntry(null, "Description", testAuthor);
             });
   }
 
   @Test
-  void testInvalidDescriptionThrowsException() {
+  void testInvalidDescriptionThrows() {
     assertThrows(IllegalArgumentException.class,
             () -> {
           new DiaryEntry("Title", "", testAuthor);
@@ -80,7 +83,7 @@ class DiaryEntryTest {
   }
 
   @Test
-  void testNullAuthorThrowsException() {
+  void testNullAuthorThrows() {
     assertThrows(IllegalArgumentException.class, () -> {
       new DiaryEntry("Gyldig tittel", "Gyldig tekst", null);
     });
