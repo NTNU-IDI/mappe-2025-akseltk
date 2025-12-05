@@ -17,8 +17,9 @@ public class UserInterface {
   public void printMenu() {
     System.out.println("\n--- MAIN MENU ---");
     System.out.println("1. Write new entry");
-    System.out.println("2. Show all entries");
-    System.out.println("3. Search for entries");
+    System.out.println("2. Delete entry");
+    System.out.println("3. Show all entries");
+    System.out.println("4. Search for entries");
     System.out.println("0. Exit");
     System.out.print("Choose a number");
   }

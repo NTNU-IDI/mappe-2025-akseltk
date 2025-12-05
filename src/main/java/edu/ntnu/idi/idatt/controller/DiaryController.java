@@ -35,8 +35,9 @@ public class DiaryController {
 
       switch (choise) {
         case "1" -> createNewEntry();
-        case "2" -> showAllEntries();
-        case "3" -> searchMenu();
+        case "2" -> deleteEntry();
+        case "3" -> showAllEntries();
+        case "4" -> searchMenu();
         case "0" -> {
           ui.printMessage("Shuting down... Goodbye!");
           running = false;
@@ -127,6 +128,21 @@ public class DiaryController {
       } catch (IllegalArgumentException e) {
         ui.printError(e.getMessage());
       }
+    }
+  }
+
+  private void deleteEntry() {
+    ui.printMessage("--- DELETE ENTRY ---");
+    showAllEntries();
+    String entryId = ui.readInput("Enter the ID of the entry you want to delete");
+
+    try {
+      int id = Integer.parseInt(entryId);
+      DiaryEntry entry = diaryRegister.getEntryById(id);
+      diaryRegister.removeEntry(entry);
+      ui.printSuccess("Entry deleted!");
+    } catch (IllegalArgumentException e) {
+      ui.printError(e.getMessage());
     }
   }
 
