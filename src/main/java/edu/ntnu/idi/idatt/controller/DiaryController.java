@@ -13,6 +13,10 @@ import java.util.Map;
 
 public class DiaryController {
   private static final String INVALID_CHOICE_MESSAGE = "Invalid choice, please try again.";
+  private static final String NO_ENTRIES_MESSAGE = "No entries found.";
+  private static final String CANCEL_MESSAGE = "Cancel (PRESS ENTER)";
+  private static final String LIST_SEPARATOR = "------------------------------";
+  private static final String STATS_SEPARATOR = "--------------------------------------------%n";
 
   private final DiaryRegister diaryRegister;
   private final AuthorRegister authorRegister;
@@ -27,7 +31,7 @@ public class DiaryController {
   public void start() {
     ui.init();
     
-    addTestData();
+     addTestData();
 
     boolean running = true;
     while (running) {
@@ -40,7 +44,7 @@ public class DiaryController {
         case "3" -> showAllEntries();
         case "4" -> searchMenu();
         case "5" -> showAuthorStatistics();
-        case "0" -> {
+        case "0", "" -> {
           ui.printMessage("Shuting down... Goodbye!");
           running = false;
         }
@@ -50,6 +54,7 @@ public class DiaryController {
   }
 
   private void createNewEntry() {
+    ui.clearScreen();
     ui.printMessage("Creating entry...");
 
     Author author = getAuthorForEntry();
@@ -77,17 +82,19 @@ public class DiaryController {
     }
 
     while (true) {
-      ui.printMessage("--- AUTHOR MENU ---");
+      ui.printMessage("\n--- AUTHOR MENU ---");
       ui.printMessage("1. select existing author");
       ui.printMessage("2. Create new author");
+      ui.printMessage("0. Press enter to cancel");
 
       String choice = ui.readInput("select an option");
 
-      return switch (choice) {
-        case "1" -> selectExistingAuthor();
-        case "2" -> createNewAuthor();
-        default -> null;
-      };
+      switch (choice) {
+        case "1" -> {return selectExistingAuthor();}
+        case "2" -> {return createNewAuthor();}
+        case "0", "" -> {return null;}
+        default -> ui.printError(INVALID_CHOICE_MESSAGE);
+      }
     }
   }
 
@@ -95,7 +102,7 @@ public class DiaryController {
     List<Author> authors = authorRegister.getAllAuthors();
 
     while (true) {
-      ui.printMessage("--- EXISTING AUTHOR MENU ---");
+      ui.printMessage("\n--- EXISTING AUTHOR MENU ---");
 
       for (int i = 0; i < authors.size(); i++) {
         ui.printMessage((i + 1) + ". " + authors.get(i));
@@ -118,10 +125,17 @@ public class DiaryController {
 
   private Author createNewAuthor() {
     while (true) {
-      ui.printMessage("--- CREATE NEW AUTHOR ---");
+      ui.printMessage("\n--- CREATE NEW AUTHOR ---");
+      ui.printMessage(CANCEL_MESSAGE);
+
       String firstName = ui.readInput("First Name");
+      if (firstName.isEmpty()) return null;
+
       String lastName = ui.readInput("Last Name");
+      if (lastName.isEmpty()) return null;
+
       String email = ui.readInput("Email");
+      if (email.isEmpty()) return null;
 
       try {
         Author newAuthor = new Author(firstName, lastName, email);
@@ -134,8 +148,20 @@ public class DiaryController {
   }
 
   private void deleteEntry() {
-    ui.printMessage("--- DELETE ENTRY ---");
-    showAllEntries();
+    if (diaryRegister.getAllEntries().isEmpty()) {
+      ui.printMessage(NO_ENTRIES_MESSAGE);
+      return;
+    }
+
+    ui.clearScreen();
+    List<DiaryEntry> entries = diaryRegister.getAllEntries();
+    for (DiaryEntry entry : entries) {
+      ui.printMessage(entry.toString());
+      ui.printMessage(LIST_SEPARATOR);
+    }
+
+    ui.printMessage("\n--- DELETE ENTRY ---");
+    ui.printMessage(CANCEL_MESSAGE);
     String entryId = ui.readInput("Enter the ID of the entry you want to delete");
 
     try {
@@ -150,27 +176,32 @@ public class DiaryController {
 
   private void showAllEntries()  {
     if (diaryRegister.getAllEntries().isEmpty()) {
-      ui.printMessage("No entries found!");
+      ui.printMessage(NO_ENTRIES_MESSAGE);
       return;
     }
 
-    ui.printMessage("--- ALL ENTRIES ---");
+    ui.clearScreen();
+    ui.printMessage("\n--- ALL ENTRIES ---");
     List<DiaryEntry> entries = diaryRegister.getAllEntries();
     for (DiaryEntry entry : entries) {
       ui.printMessage(entry.toString());
-      ui.printMessage("------------------------------");
+      ui.printMessage(LIST_SEPARATOR);
     }
+
+    ui.printMessage("\n");
+    ui.readInput("Press any key to exit");
   }
 
   private void searchMenu() {
+    ui.clearScreen();
     boolean searching = true;
     while (searching) {
-      ui.printMessage("--- SEARCH MENU ---");
+      ui.printMessage("\n--- SEARCH MENU ---");
       ui.printMessage("1. Search by keyword");
       ui.printMessage("2. Search by date");
       ui.printMessage("3. Search by date range");
       ui.printMessage("4. Search by author");
-      ui.printMessage("0. Back to main menu");
+      ui.printMessage("0. Press enter to cancel");
       String choice = ui.readInput("Choose a number");
 
       switch (choice) {
@@ -178,7 +209,7 @@ public class DiaryController {
         case "2" -> searchByDate();
         case "3" -> searchBetweenDate();
         case "4" -> searchByAuthor();
-        case "0" -> searching = false;
+        case "0", "" -> searching = false;
         default -> ui.printError(INVALID_CHOICE_MESSAGE);
       }
     }
@@ -228,12 +259,12 @@ public class DiaryController {
 
   private void printSearchResults(List<DiaryEntry> searchResults) {
     if (searchResults.isEmpty()) {
-      ui.printMessage("No entries found!");
+      ui.printMessage(NO_ENTRIES_MESSAGE);
     } else  {
-      ui.printMessage("--- Search RESULTS ---");
+      ui.printMessage("\n--- SEARCH RESULTS ---");
       for (DiaryEntry entry : searchResults) {
         ui.printMessage(entry.toString());
-        ui.printMessage("------------------------------");
+        ui.printMessage(LIST_SEPARATOR);
       }
     }
   }
@@ -247,16 +278,16 @@ public class DiaryController {
     }
 
     ui.clearScreen();
-    ui.printFormatMessage("--------------------------------------------%n");
+    ui.printFormatMessage(STATS_SEPARATOR);
     ui.printFormatMessage("|          AUTHOR STATISTICS PAGE          |%n");
-    ui.printFormatMessage("--------------------------------------------%n");
+    ui.printFormatMessage(STATS_SEPARATOR);
     ui.printFormatMessage("| %-30s | %-1s |%n", "AUTHOR", "ENTRIES");
-    ui.printFormatMessage("--------------------------------------------%n");
+    ui.printFormatMessage(STATS_SEPARATOR);
 
 
     authorStats.forEach((email, count) -> {
       ui.printFormatMessage("| %-30s | %-7d |%n", email, count);
-      ui.printFormatMessage("--------------------------------------------%n");
+      ui.printFormatMessage(STATS_SEPARATOR);
     });
 
     ui.printMessage("\n".repeat(3));
