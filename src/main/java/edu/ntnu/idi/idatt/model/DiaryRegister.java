@@ -32,7 +32,18 @@ public class DiaryRegister {
             .toList();
   }
 
-  public List<DiaryEntry> getAllEntriesByAuthor(String email) {
+  public DiaryEntry getEntryById(int entryId) {
+    if (entryId <= 0) {
+      throw new IllegalArgumentException("id must be positive");
+    }
+
+    return entries.stream()
+            .filter(entry -> entry.getEntryId() == entryId)
+            .findFirst()
+            .orElse(null);
+  }
+
+  public List<DiaryEntry> getEntriesByAuthor(String email) {
     Validators.validateString(email, "Email");
 
     return entries.stream()
@@ -46,12 +57,6 @@ public class DiaryRegister {
 
     return entries.stream()
             .filter(entry -> entry.getCreationTime().toLocalDate().equals(date))
-            .toList();
-  }
-
-  public List<DiaryEntry> getEntriesByAuthor(String email) {
-     return entries.stream()
-            .filter(entry -> entry.getAuthor().getEmail().equals(email))
             .toList();
   }
 
