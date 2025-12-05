@@ -75,7 +75,7 @@ public class DiaryRegister {
     return entries.stream()
             .filter(entry -> {
               LocalDate date = entry.getCreationTime().toLocalDate();
-              return date.isAfter(from) && date.isBefore(to);
+              return !date.isBefore(from) && date.isAfter(to);
             })
             .sorted(Comparator.comparing(DiaryEntry::getCreationTime))
             .toList();
