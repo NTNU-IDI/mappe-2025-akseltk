@@ -85,4 +85,18 @@ class DiaryEntryTest {
       new DiaryEntry("Gyldig tittel", "Gyldig tekst", null);
     });
   }
+
+  @Test
+  void testEntryWithCustomDate() {
+    LocalDateTime oldDate = LocalDateTime.of(2020, 12, 24, 12, 12);
+    DiaryEntry oldEntry = new DiaryEntry("Title", "Description", testAuthor, oldDate);
+    assertEquals(oldDate, oldEntry.getCreationTime());
+  }
+
+  @Test
+  void testToString() {
+    String output = testEntry.toString();
+    assertTrue(output.contains("Title"));
+    assertTrue(output.contains("Navn Navneson"));
+  }
 }
