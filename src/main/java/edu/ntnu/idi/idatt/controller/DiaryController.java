@@ -241,14 +241,26 @@ public class DiaryController {
   private void showAuthorStatistics() {
     Map<String, Long> authorStats = diaryRegister.getAuthorStatistics();
 
-    ui.printFormatMessage("----------------------------------%n");
-    ui.printFormatMessage("      AUTHOR STATISTICS PAGE      %n");
-    ui.printFormatMessage("----------------------------------%n");
-    ui.printFormatMessage("| %-20s | %-1s |%n", "AUTHOR", "ENTRIES");
+    if (authorStats.isEmpty()) {
+      ui.printMessage("No authors found!");
+      return;
+    }
+
+    ui.clearScreen();
+    ui.printFormatMessage("--------------------------------------------%n");
+    ui.printFormatMessage("|          AUTHOR STATISTICS PAGE          |%n");
+    ui.printFormatMessage("--------------------------------------------%n");
+    ui.printFormatMessage("| %-30s | %-1s |%n", "AUTHOR", "ENTRIES");
+    ui.printFormatMessage("--------------------------------------------%n");
+
 
     authorStats.forEach((email, count) -> {
-      ui.printFormatMessage("| %-20s | %-7d |%n", email, count);
+      ui.printFormatMessage("| %-30s | %-7d |%n", email, count);
+      ui.printFormatMessage("--------------------------------------------%n");
     });
+
+    ui.printMessage("\n".repeat(3));
+    ui.readInput("Press any key to exit");
   }
 
   private void addTestData() {

@@ -45,6 +45,10 @@ public class UserInterface {
   public void printSuccess(String message) {
     System.out.println("SUCCESS: " + message);
   }
+
+  public void clearScreen() {
+    System.out.println("\n".repeat(50));
+  }
 }
 
 
