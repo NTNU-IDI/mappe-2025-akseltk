@@ -9,6 +9,7 @@ import edu.ntnu.idi.idatt.view.UserInterface;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Map;
 
 public class DiaryController {
   private static final String INVALID_CHOICE_MESSAGE = "Invalid choice, please try again.";
@@ -38,6 +39,7 @@ public class DiaryController {
         case "2" -> deleteEntry();
         case "3" -> showAllEntries();
         case "4" -> searchMenu();
+        case "5" -> showAuthorStatistics();
         case "0" -> {
           ui.printMessage("Shuting down... Goodbye!");
           running = false;
@@ -234,6 +236,19 @@ public class DiaryController {
         ui.printMessage("------------------------------");
       }
     }
+  }
+
+  private void showAuthorStatistics() {
+    Map<String, Long> authorStats = diaryRegister.getAuthorStatistics();
+
+    ui.printFormatMessage("----------------------------------%n");
+    ui.printFormatMessage("      AUTHOR STATISTICS PAGE      %n");
+    ui.printFormatMessage("----------------------------------%n");
+    ui.printFormatMessage("| %-20s | %-1s |%n", "AUTHOR", "ENTRIES");
+
+    authorStats.forEach((email, count) -> {
+      ui.printFormatMessage("| %-20s | %-7d |%n", email, count);
+    });
   }
 
   private void addTestData() {

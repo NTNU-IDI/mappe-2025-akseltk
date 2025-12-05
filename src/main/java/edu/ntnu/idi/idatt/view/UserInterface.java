@@ -20,6 +20,7 @@ public class UserInterface {
     System.out.println("2. Delete entry");
     System.out.println("3. Show all entries");
     System.out.println("4. Search for entries");
+    System.out.println("5. Show author statistics");
     System.out.println("0. Exit");
     System.out.print("Choose a number");
   }
@@ -31,6 +32,10 @@ public class UserInterface {
 
   public void printMessage(String message) {
     System.out.println(message);
+  }
+
+  public void printFormatMessage(String format, Object... args) {
+    System.out.printf(format, args);
   }
 
   public void printError(String message) {
