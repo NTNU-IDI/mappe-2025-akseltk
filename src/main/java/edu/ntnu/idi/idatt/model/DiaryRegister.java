@@ -1,9 +1,8 @@
 package edu.ntnu.idi.idatt.model;
 
 import edu.ntnu.idi.idatt.util.Validators;import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Comparator;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class DiaryRegister {
@@ -51,6 +50,11 @@ public class DiaryRegister {
             .toList();
   }
 
+  public Map<String, Long> getAuthorStatistics() {
+    return entries.stream()
+            .collect(Collectors.groupingBy(entry ->
+                            entry.getAuthor().getEmail(), Collectors.counting()));
+    }
 
   public List<DiaryEntry> getEntriesByDate(LocalDate date) {
     Validators.validateNotNull(date, "Date");
