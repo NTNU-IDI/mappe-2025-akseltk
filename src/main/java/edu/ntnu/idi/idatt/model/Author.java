@@ -36,6 +36,6 @@ public class Author {
 
   @Override
   public String toString() {
-    return getFullName();
+    return getFirstName() + " (" + getEmail() + ")";
   }
 }
