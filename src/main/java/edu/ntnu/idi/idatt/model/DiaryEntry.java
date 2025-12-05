@@ -14,6 +14,11 @@ public class DiaryEntry {
   private final LocalDateTime creationTime;
 
   public DiaryEntry(String title, String description, Author author) {
+    this(title, description, author, LocalDateTime.now());
+  }
+
+
+  public DiaryEntry(String title, String description, Author author, LocalDateTime creationTime) {
     Validators.validateString(title, "Title");
     Validators.validateString(description, "Description");
     Validators.validateNotNull(author, "Author");
@@ -22,7 +27,7 @@ public class DiaryEntry {
     this.title = title;
     this.description = description;
     this.author = author;
-    this.creationTime = LocalDateTime.now();
+    this.creationTime = creationTime;
   }
 
   public int getEntryId() {
