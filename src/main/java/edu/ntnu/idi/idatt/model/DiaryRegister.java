@@ -89,8 +89,4 @@ public class DiaryRegister {
             .toList();
 
   }
-
-  public boolean isEmpty() {
-    return entries.isEmpty();
-  }
 }
