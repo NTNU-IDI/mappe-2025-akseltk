@@ -61,6 +61,15 @@ class AuthorTest {
             () -> {
               new Author("Navn", "Navneson", null);
             });
+
+    assertThrows(IllegalArgumentException.class,
+            () -> {
+              new Author("Navn", "Navneson", "navnex.com");
+            });
+    assertThrows(IllegalArgumentException.class,
+            () -> {
+              new Author("Navn", "Navneson", "navn@ex");
+            });
   }
 
   @Test
