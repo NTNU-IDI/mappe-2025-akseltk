@@ -61,6 +61,10 @@ public class DiaryEntry {
     return creationTime;
   }
 
+  public String getFormatedCreationTime() {
+    return creationTime.format(FORMATTER);
+  }
+
   @Override
   public String toString() {
     return String.format("ID: %d - [%s] %s (%s): %s",
