@@ -81,6 +81,16 @@ class DiaryRegisterTest {
   }
 
   @Test
+  void testRemoveNonExistingEntryDoesNothing() {
+    diaryRegister.addEntry(entry1);
+    DiaryEntry test = new DiaryEntry("Not here", "how do you see me?", author1);
+    diaryRegister.removeEntry(test);
+
+    assertTrue(diaryRegister.getAllEntries().contains(entry1));
+    assertEquals(1, diaryRegister.getAllEntries().size());
+  }
+
+  @Test
   void testRemoveNullEntryInRegisterThrows() {
     assertThrows(IllegalArgumentException.class,
             () -> {
