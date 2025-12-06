@@ -37,12 +37,12 @@ class DiaryEntryTest {
   void testSetEntryIdThrowsOnNonPositive() {
     assertThrows(IllegalArgumentException.class,
             () -> {
-      testEntry.setEntryId(-1);
+              testEntry.setEntryId(-1);
             });
 
     assertThrows(IllegalArgumentException.class,
             () -> {
-          testEntry.setEntryId(0);
+              testEntry.setEntryId(0);
             });
   }
 
@@ -52,7 +52,7 @@ class DiaryEntryTest {
 
     assertThrows(IllegalStateException.class,
             () -> {
-          testEntry.setEntryId(1);
+              testEntry.setEntryId(1);
             });
   }
 
@@ -60,8 +60,8 @@ class DiaryEntryTest {
   void testInvalidTitleThrows() {
     assertThrows(IllegalArgumentException.class,
             () -> {
-      new DiaryEntry("", "Description", testAuthor);
-    });
+              new DiaryEntry("", "Description", testAuthor);
+            });
 
     assertThrows(IllegalArgumentException.class,
             () -> {
@@ -73,7 +73,7 @@ class DiaryEntryTest {
   void testInvalidDescriptionThrows() {
     assertThrows(IllegalArgumentException.class,
             () -> {
-          new DiaryEntry("Title", "", testAuthor);
+              new DiaryEntry("Title", "", testAuthor);
             });
 
     assertThrows(IllegalArgumentException.class,
@@ -84,9 +84,10 @@ class DiaryEntryTest {
 
   @Test
   void testNullAuthorThrows() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new DiaryEntry("Gyldig tittel", "Gyldig tekst", null);
-    });
+    assertThrows(IllegalArgumentException.class,
+            () -> {
+              new DiaryEntry("Gyldig tittel", "Gyldig tekst", null);
+            });
   }
 
   @Test
