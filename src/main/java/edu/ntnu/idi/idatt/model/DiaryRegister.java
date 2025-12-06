@@ -75,13 +75,13 @@ public class DiaryRegister {
     return entries.stream()
             .filter(entry -> {
               LocalDate date = entry.getCreationTime().toLocalDate();
-              return !date.isBefore(from) && date.isAfter(to);
+              return !date.isBefore(from) && !date.isAfter(to);
             })
             .sorted(Comparator.comparing(DiaryEntry::getCreationTime))
             .toList();
   }
 
-  public List<DiaryEntry> searchKeyWord(String keyword) {
+  public List<DiaryEntry> searchByKeyword(String keyword) {
     return entries.stream()
             .filter(entry ->
                     entry.getDescription().toLowerCase().contains(keyword.toLowerCase()) ||
