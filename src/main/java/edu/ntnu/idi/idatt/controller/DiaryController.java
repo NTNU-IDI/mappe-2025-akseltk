@@ -14,7 +14,7 @@ import java.util.Map;
 public class DiaryController {
   private static final String INVALID_CHOICE_MESSAGE = "Invalid choice, please try again.";
   private static final String NO_ENTRIES_MESSAGE = "No entries found.";
-  private static final String CANCEL_MESSAGE = "Cancel (PRESS ENTER)";
+  private static final String CANCEL_MESSAGE = "Press Enter to Cancel";
   private static final String LIST_SEPARATOR = "------------------------------";
   private static final String STATS_SEPARATOR = "--------------------------------------------%n";
 
@@ -36,16 +36,16 @@ public class DiaryController {
     boolean running = true;
     while (running) {
       ui.printMenu();
-      String choise = ui.readInput("");
+      String choice = ui.readInput("");
 
-      switch (choise) {
+      switch (choice) {
         case "1" -> createNewEntry();
         case "2" -> deleteEntry();
         case "3" -> showAllEntries();
         case "4" -> searchMenu();
         case "5" -> showAuthorStatistics();
         case "0", "" -> {
-          ui.printMessage("Shuting down... Goodbye!");
+          ui.printMessage("Shutting down... Goodbye!");
           running = false;
         }
         default -> ui.printError(INVALID_CHOICE_MESSAGE);
@@ -54,7 +54,6 @@ public class DiaryController {
   }
 
   private void createNewEntry() {
-    ui.clearScreen();
     ui.printMessage("Creating entry...");
 
     Author author = getAuthorForEntry();
@@ -81,7 +80,10 @@ public class DiaryController {
       return createNewAuthor();
     }
 
-    while (true) {
+    Author selected = null;
+    boolean selecting = true;
+
+    while (selecting) {
       ui.printMessage("\n--- AUTHOR MENU ---");
       ui.printMessage("1. select existing author");
       ui.printMessage("2. Create new author");
@@ -90,18 +92,31 @@ public class DiaryController {
       String choice = ui.readInput("select an option");
 
       switch (choice) {
-        case "1" -> {return selectExistingAuthor();}
-        case "2" -> {return createNewAuthor();}
-        case "0", "" -> {return null;}
+        case "1" -> {
+          selected = selectExistingAuthor();
+          if (selected != null) {
+            selecting = false;
+          }
+        }
+        case "2" -> {
+          selected = createNewAuthor();
+          if (selected != null) {
+            selecting = false;
+          }
+        }
+        case "0", "" -> selecting = false;
         default -> ui.printError(INVALID_CHOICE_MESSAGE);
       }
     }
+    return selected;
   }
 
   private Author selectExistingAuthor() {
     List<Author> authors = authorRegister.getAllAuthors();
+    Author selected = null;
+    boolean selecting = true;
 
-    while (true) {
+    while (selecting) {
       ui.printMessage("\n--- EXISTING AUTHOR MENU ---");
 
       for (int i = 0; i < authors.size(); i++) {
@@ -109,11 +124,15 @@ public class DiaryController {
       }
 
       String input = ui.readInput("select an author number");
+      if (input.isEmpty()) {
+        selecting = false;
+      }
 
       try {
         int authorNumber = Integer.parseInt(input) - 1;
         if (authorNumber >= 0 && authorNumber < authors.size()) {
-          return authors.get(authorNumber);
+          selected = authors.get(authorNumber);
+          selecting = false;
         } else {
           ui.printError(INVALID_CHOICE_MESSAGE);
         }
@@ -121,30 +140,42 @@ public class DiaryController {
         ui.printError("Invalid input, please use a number.");
       }
     }
+    return selected;
   }
 
   private Author createNewAuthor() {
-    while (true) {
+    Author selected = null;
+    boolean selecting = true;
+
+    while (selecting) {
       ui.printMessage("\n--- CREATE NEW AUTHOR ---");
       ui.printMessage(CANCEL_MESSAGE);
 
       String firstName = ui.readInput("First Name");
-      if (firstName.isEmpty()) return null;
+      if (firstName.isEmpty()) {
+        selecting = false;
+      }
 
       String lastName = ui.readInput("Last Name");
-      if (lastName.isEmpty()) return null;
+      if (lastName.isEmpty()) {
+        selecting = false;
+      }
 
       String email = ui.readInput("Email");
-      if (email.isEmpty()) return null;
+      if (email.isEmpty()) {
+        selecting = false;
+      }
 
       try {
         Author newAuthor = new Author(firstName, lastName, email);
         authorRegister.addAuthor(newAuthor);
-        return newAuthor;
+        selected = newAuthor;
+        selecting = false;
       } catch (IllegalArgumentException e) {
         ui.printError(e.getMessage());
       }
     }
+    return selected;
   }
 
   private void deleteEntry() {
@@ -193,7 +224,6 @@ public class DiaryController {
   }
 
   private void searchMenu() {
-    ui.clearScreen();
     boolean searching = true;
     while (searching) {
       ui.printMessage("\n--- SEARCH MENU ---");
@@ -217,7 +247,7 @@ public class DiaryController {
 
   private void searchByKeyword() {
     String keyword = ui.readInput("Enter keyword");
-    List<DiaryEntry> searchResults = diaryRegister.searchKeyWord(keyword);
+    List<DiaryEntry> searchResults = diaryRegister.searchByKeyword(keyword);
     printSearchResults(searchResults);
   }
 
@@ -253,7 +283,11 @@ public class DiaryController {
       ui.printMessage("No authors found!");
       return;
     }
-    List<DiaryEntry> searchResults = diaryRegister.getEntriesByAuthor(selectExistingAuthor().getEmail());
+    Author selectedAuthor = selectExistingAuthor();
+    if  (selectedAuthor == null) {
+      return;
+    }
+    List<DiaryEntry> searchResults = diaryRegister.getEntriesByAuthor(selectedAuthor.getEmail());
     printSearchResults(searchResults);
   }
 
