@@ -54,14 +54,14 @@ class DiaryRegisterTest {
   }
 
   @Test
-  void AddEntryGeneratesId() {
+  void testAddEntryGeneratesId() {
     diaryRegister.addEntry(entry1);
 
     assertEquals(1, entry1.getEntryId());
   }
 
   @Test
-  void AddMultipleEntryGeneratesIdInIncrements() {
+  void testAddMultipleEntryGeneratesIdInIncrements() {
     diaryRegister.addEntry(entry1);
     diaryRegister.addEntry(entry2);
 
@@ -141,7 +141,7 @@ class DiaryRegisterTest {
   void testWhenValidAuthorGetEntriesByAuthorIsFound() {
     diaryRegister.addEntry(entry1);
     diaryRegister.addEntry(entry2);
-    DiaryEntry entry3 = new DiaryEntry("Test", "test", author1);
+    DiaryEntry entry3 = new DiaryEntry("Test", "hellosdfsdf", author1);
     diaryRegister.addEntry(entry3);
     List<DiaryEntry> test = diaryRegister.getEntriesByAuthor(author1.getEmail());
 
@@ -314,9 +314,4 @@ class DiaryRegisterTest {
     assertEquals(1, test2.size());
     assertTrue(test2.contains(entry1));
   }
-
-
-
-
-
 }
