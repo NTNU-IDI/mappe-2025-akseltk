@@ -116,7 +116,7 @@ public class DiaryEntry {
    * @param title the new title; must be non-null and not blank
    * @throws IllegalArgumentException if {@code title} is invalid
    */
-  private void setTitle(String title) {
+  public void setTitle(String title) {
     Validators.validateString(title, "Title");
     this.title = title;
   }
