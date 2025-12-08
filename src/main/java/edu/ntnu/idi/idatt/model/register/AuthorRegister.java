@@ -1,5 +1,6 @@
-package edu.ntnu.idi.idatt.model;
+package edu.ntnu.idi.idatt.model.register;
 
+import edu.ntnu.idi.idatt.model.entity.Author;
 import edu.ntnu.idi.idatt.util.Validators;
 import java.util.Comparator;
 import java.util.HashMap;

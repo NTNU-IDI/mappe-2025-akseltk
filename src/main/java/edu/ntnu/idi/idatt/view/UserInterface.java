@@ -1,7 +1,7 @@
 package edu.ntnu.idi.idatt.view;
 
-import edu.ntnu.idi.idatt.model.Author;
-import edu.ntnu.idi.idatt.model.DiaryEntry;
+import edu.ntnu.idi.idatt.model.entity.Author;
+import edu.ntnu.idi.idatt.model.entity.DiaryEntry;
 
 import java.util.List;
 import java.util.Map;

@@ -1,9 +1,9 @@
 package edu.ntnu.idi.idatt.controller;
 
-import edu.ntnu.idi.idatt.model.Author;
-import edu.ntnu.idi.idatt.model.AuthorRegister;
-import edu.ntnu.idi.idatt.model.DiaryEntry;
-import edu.ntnu.idi.idatt.model.DiaryRegister;
+import edu.ntnu.idi.idatt.model.entity.Author;
+import edu.ntnu.idi.idatt.model.register.AuthorRegister;
+import edu.ntnu.idi.idatt.model.entity.DiaryEntry;
+import edu.ntnu.idi.idatt.model.register.DiaryRegister;
 import edu.ntnu.idi.idatt.view.UserInterface;
 
 import java.time.LocalDate;

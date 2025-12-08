@@ -1,5 +1,8 @@
 package edu.ntnu.idi.idatt.model;
 
+import edu.ntnu.idi.idatt.model.entity.Author;
+import edu.ntnu.idi.idatt.model.entity.DiaryEntry;
+import edu.ntnu.idi.idatt.model.register.DiaryRegister;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

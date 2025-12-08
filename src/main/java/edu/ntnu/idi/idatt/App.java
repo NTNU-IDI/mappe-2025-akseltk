@@ -1,8 +1,8 @@
 package edu.ntnu.idi.idatt;
 
 import edu.ntnu.idi.idatt.controller.DiaryController;
-import edu.ntnu.idi.idatt.model.AuthorRegister;
-import edu.ntnu.idi.idatt.model.DiaryRegister;
+import edu.ntnu.idi.idatt.model.register.AuthorRegister;
+import edu.ntnu.idi.idatt.model.register.DiaryRegister;
 import edu.ntnu.idi.idatt.view.UserInterface;
 
 /**

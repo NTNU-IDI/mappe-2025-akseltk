@@ -1,5 +1,6 @@
-package edu.ntnu.idi.idatt.model;
+package edu.ntnu.idi.idatt.model.register;
 
+import edu.ntnu.idi.idatt.model.entity.DiaryEntry;
 import edu.ntnu.idi.idatt.util.Validators;
 import java.time.LocalDate;
 import java.util.*;

@@ -1,6 +1,7 @@
 package edu.ntnu.idi.idatt.model;
 
 
+import edu.ntnu.idi.idatt.model.entity.Author;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
