@@ -21,6 +21,24 @@ public class Validators {
     }
   }
 
+  public static void validateDate(LocalDateTime date) {
+    if (date.isAfter(LocalDateTime.now())) {
+      throw new IllegalArgumentException("Creation time cannot be in the future");
+    }
+  }
+
+  /**
+   * Validates that {@code email} is a non-blank string that matches the
+   * project's email pattern and has a length between 4 and 40 characters.
+   *
+   * <p>The validation uses the regular expression:
+   * {@code (?=^.{4,40}$)[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[a-zA-Z]{2,4}$}.
+   * </p>
+   *
+   * @param email the email address to validate
+   * @throws IllegalArgumentException if {@code email} is {@code null}, blank
+   *         or does not match the required format
+   */
   public static void validateEmail(String email) {
     validateString(email, "Email");
 

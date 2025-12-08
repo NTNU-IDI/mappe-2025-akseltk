@@ -22,6 +22,7 @@ public class DiaryEntry {
     Validators.validateString(title, "Title");
     Validators.validateString(description, "Description");
     Validators.validateNotNull(author, "Author");
+    Validators.validateDate(creationTime);
 
     entryId = 0;
     this.title = title;
