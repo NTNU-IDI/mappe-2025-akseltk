@@ -1,0 +1,208 @@
+@startuml
+title Class Diagram - Diary Application (IDATx1003)
+
+' ==========================================
+' STYLING & SETTINGS
+' ==========================================
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam shadowing false
+skinparam roundcorner 10
+skinparam handwritten false
+
+' Default Font Settings
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+
+' Color Palette
+skinparam package {
+    BackgroundColor White
+    BorderColor DarkSlateGray
+    FontColor Black
+}
+
+skinparam class {
+    BackgroundColor White
+    BorderColor #333333
+    ArrowColor #333333
+}
+
+' Specific Colors for MVC Layers
+skinparam package<<Model>> {
+    BackgroundColor #E3F2FD
+    BorderColor #1565C0
+}
+skinparam package<<View>> {
+    BackgroundColor #FFF3E0
+    BorderColor #E65100
+}
+skinparam package<<Controller>> {
+    BackgroundColor #F3E5F5
+    BorderColor #7B1FA2
+}
+skinparam package<<Util>> {
+    BackgroundColor #F5F5F5
+    BorderColor #616161
+}
+
+' ==========================================
+' CLASSES & PACKAGES
+' ==========================================
+
+class App {
+    + {static} void main(String[] args)
+}
+
+package "view" <<View>> {
+    class UserInterface {
+        - static final String LIST_SEPARATOR
+        - static final String STATS_SEPARATOR
+        - static final String NO_ENTRIES_MESSAGE
+        - static final String CANCEL_MESSAGE
+        - final Scanner scanner
+        --
+        + UserInterface()
+        + void init()
+        + void printMainMenu()
+        + void printAuthorMenu()
+        + void printSearchMenu()
+        + void printSingleEntry(DiaryEntry entry)
+        + void printSelectExistingAuthor(List<Author> authors)
+        + void printCreateAuthorTitle()
+        + void printDeleteEntryTitle()
+        + void printDiaryEntryList(List<DiaryEntry> entries)
+        + void printSearchResults(List<DiaryEntry> searchResults)
+        + void printAuthorStatistics(Map<String, Long> authorsStats)
+        + String readInput(String prompt)
+        + void printMessage(String message)
+        + void printError(String message)
+        + void printSuccess(String message)
+        + void clearScreen()
+    }
+}
+
+package "controller" <<Controller>> {
+    class DiaryController {
+        - static final String INVALID_CHOICE_MESSAGE
+        - static final String NO_ENTRIES_MESSAGE
+        - static final String LIST_SEPARATOR
+        --
+        + DiaryController(DiaryRegister, AuthorRegister, UserInterface)
+        + void start()
+        - void createNewEntry()
+        - Author getAuthorForEntry()
+        - Author selectExistingAuthor()
+        - Author createNewAuthor()
+        - void deleteEntry()
+        - void showAllEntries()
+        - void searchMenu()
+        - void searchByKeyword()
+        - void searchByDate()
+        - void searchBetweenDate()
+        - void searchByAuthor()
+        - void showAuthorStatistics()
+        - void addTestData()
+    }
+}
+
+package "model" <<Model>> {
+    class Author {
+        - String firstName
+        - String lastName
+        - final String email
+        --
+        + Author(String firstName, String lastName, String email)
+        + String getFirstName()
+        + String getLastName()
+        + String getFullName()
+        + String getEmail()
+        + String toString()
+    }
+
+    class DiaryEntry {
+        - {static} DateTimeFormatter FORMATTER
+        - int entryId
+        - String title
+        - String description
+        - final LocalDateTime creationTime
+        --
+        + DiaryEntry(String title, String description, Author author)
+        + DiaryEntry(String title, String description, Author author, LocalDateTime creationTime)
+        + int getEntryId()
+        + void setEntryId(int id)
+        + Author getAuthor()
+        + String getTitle()
+        + String getDescription()
+        + LocalDateTime getCreationTime()
+        + String getFormatedCreationTime()
+        + String toString()
+    }
+
+    class AuthorRegister {
+        - final Map<String, Author> authors
+        --
+        + AuthorRegister()
+        + void addAuthor(Author author)
+        + void removeAuthor(Author author)
+        + List<Author> getAllAuthors()
+    }
+
+    class DiaryRegister {
+        - final List<DiaryEntry> entries
+        - int nextId
+        --
+        + DiaryRegister()
+        + void addEntry(DiaryEntry entry)
+        + void removeEntry(DiaryEntry entry)
+        + List<DiaryEntry> getAllEntries()
+        + DiaryEntry getEntryById(int entryId)
+        + List<DiaryEntry> getEntriesByAuthor(String email)
+        + Map<String, Long> getAuthorStatistics()
+        + List<DiaryEntry> getEntriesByDate(LocalDate date)
+        + List<DiaryEntry> searchEntriesBetweenDates(LocalDate from, LocalDate to)
+        + List<DiaryEntry> searchByKeyword(String keyword)
+    }
+}
+
+package "util" <<Util>> {
+    class Validators {
+        - static final String EMAIL_REGEX
+        - static final Pattern EMAIL_PATTERN
+        --
+        - Validators()
+        + {static} void validateString(String input, String fieldName)
+        + {static} void validateNotNull(Object object, String fieldName)
+        + {static} void validateEmail(String email)
+    }
+}
+
+
+' ==========================================
+' RELATIONSHIPS & LAYOUT
+' ==========================================
+
+' 1. App initializes the Controller (Downwards)
+App ..> DiaryController : creates >
+
+' 2. App creates UI and Registers to pass to Controller
+App ..> UserInterface : creates >
+App ..> DiaryRegister : creates >
+App ..> AuthorRegister : creates >
+
+' 3. Controller uses UI (Left) and Models (Down)
+DiaryController -left-> UserInterface : uses >
+DiaryController -down-> DiaryRegister : uses >
+DiaryController -down-> AuthorRegister : uses >
+
+' 4. Model Internal Relationships
+DiaryRegister "1" *-- "*" DiaryEntry : contains >
+AuthorRegister "1" *-- "*" Author : contains >
+DiaryEntry "*" o-right- "1" Author : has >
+
+' 5. Utilities (Placed to avoid clutter, using hidden lines for layout if needed)
+DiaryEntry ..> Validators
+Author ..> Validators
+DiaryRegister ..> Validators
+AuthorRegister ..> Validators
+
+@enduml

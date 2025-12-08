@@ -1,0 +1,61 @@
+@startuml
+title Activity Diagram: Diary Application (Simplified)
+
+' === STYLE ===
+skinparam backgroundColor #FDFDFD
+skinparam linetype ortho
+skinparam shadowing false
+skinparam handwritten false
+
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 14
+skinparam defaultFontColor #444444
+
+skinparam activity {
+    BackgroundColor #E1F5FE
+    BorderColor #0277BD
+    BorderThickness 1
+    Radius 10
+}
+
+skinparam activityDiamond {
+    BackgroundColor #FFF3E0
+    BorderColor #EF6C00
+    FontSize 12
+}
+
+skinparam arrow {
+    Color #555555
+    Thickness 1
+}
+
+' === LOGIC ===
+start
+:Initialize Application;
+
+repeat
+    :Display Main Menu;
+    :Get User Choice;
+
+    switch ( Action? )
+    case ( New Entry )
+        :Select/Create Author;
+        :Input Title & Description;
+        :Save Entry to Register;
+    case ( Delete Entry )
+        :Input Entry ID;
+        :Remove from Register;
+    case ( Show All )
+        :Retrieve All Entries;
+        :Display Sorted List;
+    case ( Search )
+        :Select Search Criteria\n(Keyword, Date, Author);
+        :Display Results;
+    case ( Statistics )
+        :Display Statistics;
+    case ( Exit )
+        stop
+    endswitch
+repeat while (Keep Running)
+
+@enduml
