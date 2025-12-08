@@ -51,14 +51,12 @@ public class DiaryEntry {
    * @throws IllegalArgumentException if {@code author} is null
    */
   public DiaryEntry(String title, String description, Author author, LocalDateTime creationTime) {
-    Validators.validateString(title, "Title");
-    Validators.validateString(description, "Description");
     Validators.validateNotNull(author, "Author");
     Validators.validateDate(creationTime);
 
     entryId = 0;
-    this.title = title;
-    this.description = description;
+    setTitle(title);
+    setDescription(description);
     this.author = author;
     this.creationTime = creationTime;
   }
@@ -113,12 +111,34 @@ public class DiaryEntry {
   }
 
   /**
+   * Sets the entry title after validating it.
+   *
+   * @param title the new title; must be non-null and not blank
+   * @throws IllegalArgumentException if {@code title} is invalid
+   */
+  private void setTitle(String title) {
+    Validators.validateString(title, "Title");
+    this.title = title;
+  }
+
+  /**
    * Returns the entry description as supplied during construction.
    *
    * @return the textual description of the entry
    */
   public String getDescription() {
     return description;
+  }
+
+  /**
+   * Sets the entry description after validating it.
+   *
+   * @param description the new description; must be non-null and not blank
+   * @throws IllegalArgumentException if {@code description} is invalid
+   */
+  public void setDescription(String description) {
+    Validators.validateString(description, "Description");
+    this.description = description;
   }
 
   /**

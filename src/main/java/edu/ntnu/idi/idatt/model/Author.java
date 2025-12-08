@@ -3,13 +3,11 @@ package edu.ntnu.idi.idatt.model;
 import edu.ntnu.idi.idatt.util.Validators;
 
 /**
- * Represents an author with a first name, last name and an email address.
+ * Represents an author with a first name, last name and email address.
  *
- *<p>Instances carry the immutable email address provided at construction and
- * mutable first and last names. Input values are validated during construction
- * using {@link Validators}; invalid input will result in an
- * {@link IllegalArgumentException}.
- *</p>
+ * <p>Instances are immutable except for first and last name which can be
+ * changed internally during construction only. Email is immutable after construction.
+ * </p>
  */
 public class Author {
   private String firstName;
@@ -17,32 +15,27 @@ public class Author {
   private final String email;
 
   /**
-   * Creates a new {@code Author} with the given name parts and email address.
+   * Constructs a new author with the provided first name, last name and email.
    *
-   * <p>All parameters are validated using {@link Validators}:
-   * <ul>
-   *   <li>{@code firstName} and {@code lastName} must be non-empty strings.</li>
-   *   <li>{@code email} must conform to the expected email format.</li>
-   * </ul>
+   * <p>All string parameters are validated for non-nullity and non-blankness.
+   * The email is further validated for format using {@link Validators#validateEmail(String)}.
    * </p>
    *
-   * @param firstName the author's given name; must be a non-empty string
-   * @param lastName the author's family name; must be a non-empty string
-   * @param email the author's email address; must be a valid email
-   * @throws IllegalArgumentException if any argument is invalid according to {@link Validators}
+   * @param firstName the author's first name; must be non-null and not blank
+   * @param lastName the author's last name; must be non-null and not blank
+   * @param email the author's email address; must be non-null, not blank and valid format
+   * @throws IllegalArgumentException if any parameter is invalid
    */
   public Author(String firstName, String lastName, String email) {
-    Validators.validateString(firstName, "First Name");
-    Validators.validateString(lastName, "Last Name");
     Validators.validateEmail(email);
 
-    this.firstName = firstName;
-    this.lastName = lastName;
+    setFirstName(firstName);
+    setLastName(lastName);
     this.email = email;
   }
 
   /**
-   * Returns the author's first (given) name as provided at construction.
+   * Returns the author's first name as provided at construction.
    *
    * @return the first name of the author
    */
@@ -51,12 +44,34 @@ public class Author {
   }
 
   /**
-   * Returns the author's last (family) name as provided at construction.
+   * Sets the author's first name after validating it.
+   *
+   * @param firstName the new first name; must be non-null and not blank
+   * @throws IllegalArgumentException if {@code firstName} is invalid
+   */
+  private void setFirstName(String firstName) {
+    Validators.validateString(firstName, "First Name");
+    this.firstName = firstName;
+  }
+
+  /**
+   * Returns the author's last name as provided at construction.
    *
    * @return the last name of the author
    */
   public String getLastName() {
     return lastName;
+  }
+
+  /**
+   * Sets the author's last name after validating it.
+   *
+   * @param lastName the new last name; must be non-null and not blank
+   * @throws IllegalArgumentException if {@code lastName} is invalid
+   */
+  private void setLastName(String lastName) {
+    Validators.validateString(lastName, "Last Name");
+    this.lastName = lastName;
   }
 
   /**
