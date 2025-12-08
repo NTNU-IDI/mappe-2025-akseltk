@@ -270,6 +270,7 @@ public class DiaryController {
    */
   private void showAllEntries() {
     ui.printDiaryEntryList(diaryRegister.getAllEntries());
+    ui.readInput("press enter to exit");
   }
 
   private void searchMenu() {

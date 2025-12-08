@@ -70,7 +70,7 @@ public class UserInterface {
     System.out.println("\n--- SEARCH MENU ---");
     System.out.println("1. Search by keyword");
     System.out.println("2. Search by date");
-    System.out.println("3. Search by date range");
+    System.out.println("3. Search between dates");
     System.out.println("4. Search by author");
     System.out.println("0. Press enter to cancel");
     System.out.print("Choose a number");
@@ -138,9 +138,6 @@ public class UserInterface {
       for (DiaryEntry entry : entries) {
         printSingleEntry(entry);
       }
-
-      System.out.print("Press Enter to exit: ");
-      scanner.nextLine();
     }
   }
 
