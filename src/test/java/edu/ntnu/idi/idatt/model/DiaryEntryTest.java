@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -88,15 +89,31 @@ class DiaryEntryTest {
   void testNullAuthorThrows() {
     assertThrows(IllegalArgumentException.class,
             () -> {
-              new DiaryEntry("Gyldig tittel", "Gyldig tekst", null);
+              new DiaryEntry("Title", "Description", null);
             });
   }
 
   @Test
-  void testEntryWithCustomDate() {
+  void testValidDateEntryWithCustomDate() {
     LocalDateTime oldDate = LocalDateTime.of(2020, 12, 24, 12, 12);
     DiaryEntry oldEntry = new DiaryEntry("Title", "Description", testAuthor, oldDate);
     assertEquals(oldDate, oldEntry.getCreationTime());
+  }
+
+  @Test
+  void testFutureDateEntryWithCustomDateThrows() {
+    LocalDateTime futureDate = LocalDateTime.now().plusDays(1);
+    assertThrows(IllegalArgumentException.class,
+            () -> {
+              new DiaryEntry("Title", "Description", testAuthor, futureDate);
+            });  }
+
+  @Test
+  void testgetFOrmatedCreationTimeGivesFormattedDate() {
+    DiaryEntry entry = new DiaryEntry("Title", "Description", testAuthor);
+
+    DateTimeFormatter test = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    assertEquals(entry.getCreationTime().format(test), entry.getFormatedCreationTime());
   }
 
   @Test
