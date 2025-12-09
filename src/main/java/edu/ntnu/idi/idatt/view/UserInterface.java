@@ -105,7 +105,7 @@ public class UserInterface {
       System.out.println((i + 1) + ". " + authors.get(i));
     }
 
-    System.out.println("select an author number");
+    System.out.print("select an author number");
   }
 
   /**

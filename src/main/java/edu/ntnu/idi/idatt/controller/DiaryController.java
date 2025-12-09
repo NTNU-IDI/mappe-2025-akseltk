@@ -1,11 +1,10 @@
 package edu.ntnu.idi.idatt.controller;
 
 import edu.ntnu.idi.idatt.model.entity.Author;
-import edu.ntnu.idi.idatt.model.register.AuthorRegister;
 import edu.ntnu.idi.idatt.model.entity.DiaryEntry;
+import edu.ntnu.idi.idatt.model.register.AuthorRegister;
 import edu.ntnu.idi.idatt.model.register.DiaryRegister;
 import edu.ntnu.idi.idatt.view.UserInterface;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -36,7 +35,8 @@ public class DiaryController {
    * @param authorRegister the author register used to persist and query authors
    * @param ui the user interface used for input and output
    */
-  public DiaryController(DiaryRegister diaryRegister, AuthorRegister authorRegister, UserInterface ui) {
+  public DiaryController(DiaryRegister diaryRegister,
+                         AuthorRegister authorRegister, UserInterface ui) {
     this.diaryRegister = diaryRegister;
     this.authorRegister = authorRegister;
     this.ui = ui;
@@ -112,12 +112,14 @@ public class DiaryController {
    * <p>This method checks if there are existing authors. If none are found,
    * it prompts the user to create a new author. Otherwise, it presents a menu
    * allowing the user to either select an existing author or create a new one.
-   * The selected or created author is returned for use in diary entry creation.</p>
+   * The selected or created author is returned for use in
+   * diary entry creation.</p>
    *
-   * @return the selected or newly created {@link Author}, or {@code null} if the operation was cancelled
+   * <p>@return the selected or newly created {@link Author},
+   * or {@code null} if the operation was cancelled.</p>
    */
   private Author getAuthorForEntry() {
-    if(authorRegister.getAllAuthors().isEmpty()) {
+    if (authorRegister.getAllAuthors().isEmpty()) {
       ui.printMessage("No authors found! Creating one...");
       return createNewAuthor();
     }
@@ -391,9 +393,12 @@ public class DiaryController {
       authorRegister.addAuthor(a2);
       authorRegister.addAuthor(a3);
 
-      DiaryEntry e1 = new DiaryEntry("Movie day", "Watched Inception! It was strange, but amazing at the same time.", a1);
-      DiaryEntry e2 = new DiaryEntry("Training", "Hit chest with two of my friends, i always have a great time with them", a2);
-      DiaryEntry e3 = new DiaryEntry("Dinning night", "Ait at this great restaurant with my family, i ate stake with mashed potatoes.", a3);
+      DiaryEntry e1 = new DiaryEntry("Movie day",
+              "Watched Inception! It was strange, but amazing at the same time.", a1);
+      DiaryEntry e2 = new DiaryEntry("Training",
+              "Hit chest with two of my friends, i always have a great time with them", a2);
+      DiaryEntry e3 = new DiaryEntry("Dinning night",
+              "Ait at this great restaurant with my family, i ate stake with mashed potatoes.", a3);
 
       diaryRegister.addEntry(e1);
       diaryRegister.addEntry(e2);
