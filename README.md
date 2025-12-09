@@ -82,3 +82,10 @@ The project includes a suite of JUnit 5 tests to verify the correctness of the m
 *   **Course Material:** Principles of Object-Oriented Programming and MVC architecture as taught in IDATT1003.
 *   **Java Documentation:** [Official Java 21 Documentation](https://docs.oracle.com/en/java/javase/21/)
 *   **Maven:** [Apache Maven Project](https://maven.apache.org/)
+*   GeeksforGeek, «MVC Architecture - System Design,» [Internett]. Available: https://www.geeksforgeeks.org/system-design/mvc-architecture-system-design/. [Funnet 29 11 2025].
+*   I. Polat, «Coupling Concept in Software Engineering,» [Internett]. Available: https://medium.com/@ilkaypolatnl/coupling-concept-in-software-engineering-916fc07f5c33. [Funnet 9 11 2025].
+*   R. Patel, «Understanding Cohesion in Software Engineering,» [Internett]. Available: https://medium.com/@ravipatel.it/understanding-cohesion-in-software-engineering-8fefc017de5c. [Funnet 29 11 2025].
+*   Automation Panda, «Arrange-Act-Assert: A Pattern for Writing Good Tests,» [Internett]. Available: https://automationpanda.com/2020/07/07/arrange-act-assert-a-pattern-for-writing-good-tests/.
+*   N. Muguda, «Responsibility-Driven Design: Designing with Stories and Roles,» [Internett]. Available: https://naveenkumarmuguda.medium.com/responsibility-driven-design-designing-with-stories-and-roles-acc2e903c69f.
+*   C. S. Horstmann, Core Java Volume I--Fundamentals, Oracle Press, 2018.
+*   S. Dizon, «Defensive Coding Approach,» [Internett]. Available: https://medium.com/@sophiadizon/defensive-coding-approach-43bf3f3c007d. [Funnet 29 11 2025].
